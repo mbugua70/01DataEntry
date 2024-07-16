@@ -50,7 +50,6 @@ export async function sleep(ms) {
 }
 
 export async function getUserData() {
-  await sleep(1000);
   const storeOne = localStorage.getItem("Auth");
   const storeTwo = JSON.parse(storeOne);
   const userResult = storeTwo.user;

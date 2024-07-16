@@ -17,9 +17,20 @@ const register = async (req, res) => {
     .json({ user:  user.getUser(), token });
 };
 
+const getUser = async (req, res) => {
+  const {
+    params: { id: userId },
+  } = req;
 
+  const user = await UserModel.findOne({ _id: userId });
+  if (!user) {
+    throw new NotFoundError(`No job with id: ${userId}`);
+  }
+
+  res.status(StatusCodes.OK).json({ user });
+};
 
 module.exports = {
   register,
-
+  getUser,
 };

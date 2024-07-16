@@ -18,12 +18,12 @@ const SurveyForm = () => {
 
   const form = useForm({
     defaultValues: {
-         name: "",
-         location: "",
-         user_id: "",
-         present: "",
-         phone:"",
-      },
+      name: "",
+      location: "",
+      user_id: "",
+      present: "",
+      phone: "",
+    },
   });
 
   const { register, handleSubmit, reset, formState } = form;
@@ -31,7 +31,7 @@ const SurveyForm = () => {
   console.log({ isSubmitSuccessful });
 
   const onSubmit = async (data) => {
-   console.log(data);
+    console.log(data);
 
     try {
       const response = await surveyForm(data);
@@ -50,8 +50,6 @@ const SurveyForm = () => {
       });
     }
   };
-
-
 
   React.useEffect(() => {
     if (isSubmitSuccessful) {
@@ -87,7 +85,7 @@ const SurveyForm = () => {
             placeholder="Enter phone number"
             {...register("phone")}
           />
-          <label htmlFor="present">3. Present</label>
+          <label htmlFor="present">3. Gift Item</label>
           <input
             className="input"
             type="text"
