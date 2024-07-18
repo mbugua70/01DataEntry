@@ -20,6 +20,7 @@ import EditEvent from "./EditEvent";
 
 // import { requireAuth } from "./utilis"
 import { requireAuth } from "./utilis";
+import FormLayout from "./FormLayout";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -34,19 +35,34 @@ export const router = createBrowserRouter(
         <Route path="/survey" element={<SurveyLayout />} loader={surveyLoader}>
           <Route
             path="/survey"
+            element={<FormLayout />}
+            loader={async ({ request }) => {
+              return await requireAuth(request);
+            }}
+          >
+            <Route
+              path="/survey/edit"
+              element={<EditEvent />}
+              loader={async ({ request }) => {
+                return await requireAuth(request);
+              }}
+            />
+          </Route>
+          {/* <Route
+            path="/survey"
             element={<SurveyPage />}
             loader={async ({ request }) => {
               return await requireAuth(request);
             }}
-          />
+          /> */}
 
-          <Route
+          {/* <Route
             path="/survey/edit"
             element={<EditEvent />}
             loader={async ({ request }) => {
               return await requireAuth(request);
             }}
-          />
+          /> */}
           {/*
           <Route
             path="/survey"

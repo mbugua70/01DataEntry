@@ -30,7 +30,26 @@ const getUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user });
 };
 
+const updateUser = async (req, res) => {
+  const {
+    body: { ba_name, ba_phone, ba_location },
+    params: { id: userId },
+  } = req;
+
+  if (ba_name === "" || ba_phone === "" || ba_location === "") {
+    throw new BadRequestError("Ba phone, name and location cannot be found");
+  }
+
+  const user = await UserModel.findByIdAndUpdate({ _id: userId }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(StatusCodes.OK).json({ user });
+};
+
 module.exports = {
   register,
   getUser,
+  updateUser,
 };

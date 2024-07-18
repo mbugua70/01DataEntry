@@ -497,6 +497,55 @@ nav i.material-icons {
   display: block;
 }
 
+/* form actions */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
+  margin-block: 2rem;
+}
+
+/* buttons */
+
+.button {
+  font: inherit;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  background-color: #e30d7c;
+  color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: #e30d5b;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.button-text {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  background-color: transparent;
+  border: none;
+  color: #3f0c26;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.button-text:hover {
+  color: #7c184c;
+}
+
 /* loading indicator */
 .lds-ring {
   display: inline-block;
