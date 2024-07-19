@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { fetchUser, updateUser } from "../util/http.js";
+import { fetchUser, updateUser, queryClient } from "../util/http.js";
 import { useOutletContext } from "react-router-dom";
 
 import EventForm from "./EventForm.jsx";
@@ -14,9 +14,9 @@ export default function EditEvent() {
   const { userData } = useOutletContext();
 
   const userId = userData.userId;
-  console.log(userId);
+
   const { data, isError, isPending, error } = useQuery({
-    queryKey: ["events", userId],
+    queryKey: ["user", userId],
     queryFn: (signal) => fetchUser(userData, signal),
   });
 
@@ -25,18 +25,16 @@ export default function EditEvent() {
     // onMutate will be exercuted instantly right before you get back a response from the updating function
     //  it will be called immediately once the mutate function is called.
     onMutate: async (data) => {
-      // cancelQueries will only cancel queries triggered by useQuery and not mutation
+      const newEventData = data.user;
 
-      // setQueryData takes two arguement
-      // 1. its the key of the event you  want to edit.
-      // 2. the second arguement is the new data
-      const newEventData = data.event;
-      await queryClient.cancelQueries({ queryKey: ["events", paramsId.id] });
+      await queryClient.cancelQueries({
+        queryKey: ["user", userData.userId],
+      });
       // the use of getQueryData to get the data
       // takes the queryKey as its parameter
       // it gets the previousOld data
-      const previousData = queryClient.getQueryData(["events", paramsId.id]);
-      queryClient.setQueryData(["events", paramsId.id], newEventData);
+      const previousData = queryClient.getQueryData(["user", userData.userId]);
+      queryClient.setQueryData(["user", userData.userId], newEventData);
 
       // inorder for the previousData to be part of the context we should return it
       return { previousData };
@@ -46,17 +44,19 @@ export default function EditEvent() {
     // 1. error
     // 2. newData
     // 3. context method
-    onError: (errror, data, context) => {
-      queryClient.setQueryData(["events", paramsId.id], context.previousData);
+    onError: (error, data, context) => {
+      console.error("Error in mutation:", error);
+      queryClient.setQueryData(["user", userData.userId], context.previousData);
     },
     // always refetch after error or success
     onSettled: () => {
-      queryClient.invalidateQueries(["events", paramsId.id]);
+      console.log("Mutation settled with data:", data);
+      queryClient.invalidateQueries(["user", userData.userId]);
     },
   });
 
   function handleSubmit(formData) {
-    mutate({ id: paramsId.id, event: formData });
+    mutate({ id: userData.userId, user: formData });
     navigate("../");
   }
 
@@ -91,7 +91,6 @@ export default function EditEvent() {
   }
 
   if (data) {
-    console.log(data);
     content = (
       <EventForm inputData={data} onSubmit={handleSubmit}>
         <Link to="../" className="button-text">

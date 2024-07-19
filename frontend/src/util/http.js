@@ -24,12 +24,15 @@ export async function fetchUser({ userId, signal }) {
 }
 
 // updating fun
-export async function updateUser({ userId, data }) {
+export async function updateUser({ id, user }) {
+  console.log("working");
+  console.log(id);
+  console.log(user);
   const response = await fetch(
     `http://localhost:4040/api/v1/ba/register/${id}`,
     {
       method: "PATCH",
-      body: JSON.stringify({ data }),
+      body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json",
       },
@@ -42,6 +45,8 @@ export async function updateUser({ userId, data }) {
     error.info = await response.json();
     throw error;
   }
-
+  const userData = await response.json();
+  const loginData = JSON.stringify(userData);
+  localStorage.setItem("Auth", loginData);
   return response.json();
 }

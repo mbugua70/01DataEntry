@@ -4,7 +4,9 @@ const UserDetails = ({ userData }) => {
   return (
     <>
       <div className="card-panel">
-        <Link to="/survey/edit">Edit</Link>
+        <Link className="editButton" to="/survey/edit">
+          Edit
+        </Link>
 
         <h4>Personal Information</h4>
         <div className="profile">

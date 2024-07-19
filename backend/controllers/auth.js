@@ -9,7 +9,16 @@ const register = async (req, res) => {
   //     throw new BadRequestError("Please all the field must be filled");
   //   }
 
-  const user = await UserModel.create({ ...req.body });
+
+  let user = await UserModel.findOne({ ba_phone });
+
+  if (user) {
+    const token = user.createToken();
+
+    return res.status(StatusCodes.OK).json({ user: user.getUser(), token });
+  }
+
+  user = await UserModel.create({ ...req.body });
 
   const token = user.createToken();
   res
@@ -39,6 +48,7 @@ const updateUser = async (req, res) => {
   if (ba_name === "" || ba_phone === "" || ba_location === "") {
     throw new BadRequestError("Ba phone, name and location cannot be found");
   }
+
 
   const user = await UserModel.findByIdAndUpdate({ _id: userId }, req.body, {
     new: true,
