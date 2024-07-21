@@ -12,6 +12,7 @@ export async function fetchUser({ userId, signal }) {
   );
 
   if (!response.ok) {
+    console.log("Error working");
     const error = new Error("An error occurred while fetching the user");
     error.code = response.status;
     error.info = await response.json();
@@ -45,8 +46,9 @@ export async function updateUser({ id, user }) {
     error.info = await response.json();
     throw error;
   }
-  const userData = await response.json();
+  const userData = await response.clone().json();
   const loginData = JSON.stringify(userData);
+  console.log(loginData);
   localStorage.setItem("Auth", loginData);
   return response.json();
 }

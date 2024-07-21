@@ -67,6 +67,7 @@ export default function EditEvent() {
   let content;
 
   if (isPending) {
+
     content = (
       <div className="center">
         <LoadingIndicator />
@@ -75,6 +76,9 @@ export default function EditEvent() {
   }
 
   if (isError) {
+    console.log("Error client working");
+    console.log(isError);
+    console.log(error);
     content = (
       <>
         <ErrorBlock

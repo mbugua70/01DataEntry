@@ -15,7 +15,6 @@ export async function loader ({request}) {
 const SurveyLayout = () =>{
 
     const userDataPromise = useLoaderData();
-    console.log(userDataPromise);
 
     return(
         <>

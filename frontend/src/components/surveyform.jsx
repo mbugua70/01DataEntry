@@ -1,21 +1,15 @@
 /* eslint-disable react-refresh/only-export-components */
-import React from "react";
-import {  useForm} from "react-hook-form"
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { surveyForm } from "./api";
+import { OfflineContext } from "../context_offline/offline_context";
+import useOnlineStatus from "../custom_hook/useOffline";
 
 const SurveyForm = () => {
-  // my state
-  // const [valueCheck, setvalueCheck] = React.useState({
-  //   number_Two: "",
-  //   number_six: "",
-  //   number_twelve: "",
-  //   number_fourteen: "",
-  // });
-
-  // navigation state code
-
+  const isOnline = useOnlineStatus();
+  const { addToOffline } = useContext(OfflineContext);
   const form = useForm({
     defaultValues: {
       name: "",
@@ -28,26 +22,30 @@ const SurveyForm = () => {
 
   const { register, handleSubmit, reset, formState } = form;
   const { isSubmitSuccessful, isSubmitting } = formState;
-  console.log({ isSubmitSuccessful });
 
   const onSubmit = async (data) => {
-    console.log(data);
-
-    try {
-      const response = await surveyForm(data);
-      if (response) {
+    if (isOnline) {
+      console.log("online working");
+      try {
+        const response = await surveyForm(data);
+        if (response) {
+          const MySwal = withReactContent(Swal);
+          MySwal.fire({
+            html: <i>Your data have been submitted successfully!</i>,
+            icon: "success",
+          });
+        }
+      } catch (err) {
         const MySwal = withReactContent(Swal);
         MySwal.fire({
-          html: <i>Your data have been submitted successfully!</i>,
-          icon: "success",
+          html: <i>{err.message}</i>,
+          icon: "error",
         });
       }
-    } catch (err) {
-      const MySwal = withReactContent(Swal);
-      MySwal.fire({
-        html: <i>{err.message}</i>,
-        icon: "error",
-      });
+    } else {
+      console.log("offline working");
+      console.log(data);
+      addToOffline(data);
     }
   };
 

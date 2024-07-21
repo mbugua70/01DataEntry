@@ -11,14 +11,12 @@ import { loginUser } from "./api";
 
 
 
-console.log(Navigator)
 
-export const loginloader = ({request}) =>{
-return new URL(request.url).searchParams.get("message")
-}
+export const loginloader = ({ request }) => {
+  return new URL(request.url).searchParams.get("message");
+};
 
 export const action = async ({ request }) => {
-  console.log("testing the action");
   const formData = await request.formData();
   const ba_name = formData.get("ba_name");
   const ba_phone = formData.get("ba_phone");
@@ -30,7 +28,6 @@ export const action = async ({ request }) => {
   formdata.append("ba_name", ba_name);
   formdata.append("ba_location", ba_location);
   formdata.append("ba_phone", ba_phone);
-  console.log(formdata.get("ba_name"));
   // const pathname = new URL(request.url).searchParams.get("redirectTo") || "/survey"
   try {
     const ba_name = formdata.get("ba_name");
@@ -50,27 +47,19 @@ export const action = async ({ request }) => {
       }, 2000);
     }
 
-    // console.log(pathname)
-    // const response = redirect(pathname)
-    // response.body = true
-    // console.log(pathname)
     return redirect("/survey");
   } catch (err) {
     console.error("err", err.syntaxError);
-    console.log(err.message);
     return err.message;
   }
 };
 
 const RegistrationPage = () => {
   const loginLoaderMessage = useLoaderData();
-  console.log(loginLoaderMessage);
 
   const navigation = useNavigation();
-  console.log(navigation);
 
   const errorMessage = useActionData();
-  console.log(errorMessage);
 
   const storeBa = localStorage.getItem("Auth");
   const storeBaTwo = JSON.parse(storeBa);
