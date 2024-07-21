@@ -2,7 +2,9 @@ import { NavLink, Outlet } from "react-router-dom";
 import HomeNavBar from "./homenavbar";
 import Dexie from "dexie";
 import { OfflineContext } from "../context_offline/offline_context";
+import "react-toastify/dist/ReactToastify.css";
 import { useContext, useEffect, useCallback } from "react";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import useOnlineStatus from "../custom_hook/useOffline";
 import { surveyForm } from "./api";
 
@@ -15,12 +17,22 @@ const IndexPage = () => {
   const isOnline = useOnlineStatus();
   const { offlineData, removeFromOffline } = useContext(OfflineContext);
 
+  useEffect(() => {
+    // toastify
+    toast.info("Info Notification !", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+    });
+  }, []);
   const syncData = useCallback(async () => {
-    console.log("SyncData function called");
-
     if (isOnline) {
-      console.log("Sync online");
-
       // Process each offline data item
       for (const item of offlineData) {
         // Prepare batched data
@@ -28,13 +40,12 @@ const IndexPage = () => {
         try {
           for (const sendData of item) {
             const response = await surveyForm(sendData.jsonData);
-            console.log(response);
           }
           // Remove from offline context and database
           for (const eachItem of item) {
             console.log(eachItem.id);
             removeFromOffline(eachItem.id);
-            console.log("Offline data deleted");
+
             await db.data.delete(eachItem.id);
           }
         } catch (error) {
@@ -44,7 +55,7 @@ const IndexPage = () => {
     } else {
       console.log("Sync offline");
     }
-  }, [isOnline, offlineData, removeFromOffline]);
+  }, [offlineData, removeFromOffline]);
 
   useEffect(() => {
     // Sync data when online status changes
@@ -56,7 +67,7 @@ const IndexPage = () => {
     return () => {
       window.removeEventListener("online", handleOnline);
     };
-  }, [syncData]);
+  }, []);
 
   return (
     <>
@@ -68,7 +79,7 @@ const IndexPage = () => {
         <div className="firstnav">
           <NavLink
             to="#"
-            className="item-link col l12 center valign-wrapper waves-effect"
+            className="item-link-offline col l12 center valign-wrapper waves-effect"
           >
             <span className="nav-style">OFFLINE </span>
           </NavLink>
@@ -85,8 +96,10 @@ const IndexPage = () => {
             <span className="nav-style">REPORT</span>
           </NavLink>
         </div>
+        <ToastContainer />
       </div>
-      <Outlet />
+
+      {/* <Outlet /> */}
     </>
   );
 };

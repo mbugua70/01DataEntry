@@ -35,7 +35,7 @@ const dataReducer = (state, action) => {
 };
 
 export const DataProvider = ({ children }) => {
-  const isOnline = useOnlineStatus();
+
   const [state, dispatch] = useReducer(dataReducer, {
     offlineData: [],
   });
