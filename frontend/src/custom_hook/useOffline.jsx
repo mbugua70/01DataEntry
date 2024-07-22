@@ -3,33 +3,40 @@ import { useState, useEffect } from "react";
 const useOnlineStatus = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-
-
   useEffect(() => {
-    const updateOnlineStatus = async () => {
+    const checkOnlineStatus = async () => {
       try {
-        const response = await fetch("https://www.google.com/favicon.ico", {
-          method: "HEAD",
-          mode: "no-cors",
-        });
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/posts/1",
+          {
+            method: "HEAD",
+            cache: "no-store",
+          }
+        );
         setIsOnline(response.ok);
       } catch (error) {
         setIsOnline(false);
       }
     };
-    const handleOnline = () => updateOnlineStatus();
-    const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    const updateOnlineStatus = () => {
+      if (navigator.onLine) {
+        checkOnlineStatus();
+      } else {
+        setIsOnline(false);
+      }
+    };
+
+    window.addEventListener("online", updateOnlineStatus);
+    window.addEventListener("offline", updateOnlineStatus);
 
     // Initial check
     updateOnlineStatus();
 
     // Cleanup listeners on component unmount
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("online", updateOnlineStatus);
+      window.removeEventListener("offline", updateOnlineStatus);
     };
   }, []);
 

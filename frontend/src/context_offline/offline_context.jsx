@@ -35,51 +35,20 @@ const dataReducer = (state, action) => {
 };
 
 export const DataProvider = ({ children }) => {
-
   const [state, dispatch] = useReducer(dataReducer, {
     offlineData: [],
   });
 
-  const loadData = async () => {
-    const data = await db.data.toArray();
-    dispatch({ type: "ADD_DATA", payload: data });
-  };
-  loadData();
-
-  // useEffect(() => {
-  //   const syncData = useCallback(async () => {
-  //     console.log("SyncData fun called");
-  //     if (isOnline) {
-  //       state.offlineData.forEach(async (item) => {
-  //         try {
-  //           await fetch("http://localhost:4040/api/v1/report", {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify(item.jsonData),
-  //           });
-  //           dispatch({ type: "REMOVE_DATA", payload: item });
-  //           console.log("Offline data deleted");
-  //           await db.data.delete(item.id);
-  //         } catch (error) {
-  //           console.error("Error syncing data:", error);
-  //         }
-  //       });
-  //     }
-  //   });
-
-  //   // window.addEventListener("online", syncData);
-
-  //   // return () => {
-  //   //   window.removeEventListener("online", syncData);
-  //   // };
-  // }, [isOnline, state.offlineData]);
+  // const loadData = async () => {
+  //   const data = await db.data.toArray();
+  //   dispatch({ type: "ADD_DATA", payload: data });
+  // };
+  // loadData();
 
   const addToOffline = async (jsonData) => {
-    console.log(jsonData);
     console.log("addOffline working");
     const id = await db.data.add({ jsonData });
+    console.log(id);
     dispatch({
       type: "ADD_DATA",
       payload: { id, jsonData },
@@ -87,6 +56,7 @@ export const DataProvider = ({ children }) => {
   };
 
   const removeFromOffline = async (id) => {
+    console.log("Deleting data is being called");
     await db.data.delete(id);
     dispatch({
       type: "REMOVE_DATA",

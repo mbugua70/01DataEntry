@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import { surveyForm } from "./api";
 import { OfflineContext } from "../context_offline/offline_context";
 import useOnlineStatus from "../custom_hook/useOffline";
@@ -44,8 +45,20 @@ const SurveyForm = () => {
       }
     } else {
       console.log("offline working");
-      console.log(data);
-      addToOffline(data);
+
+      // addToOffline(data);
+      // toastify
+      toast.info("Failed to upload to the data !", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Slide,
+      });
     }
   };
 
@@ -142,6 +155,7 @@ const SurveyForm = () => {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </>
   );
 };

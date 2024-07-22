@@ -18,7 +18,7 @@ export async function loginUser(creds) {
 }
 
 export async function surveyForm(test) {
-  console.log(test);
+
   const storeOne = localStorage.getItem("Auth");
   const storeTwo = JSON.parse(storeOne);
   const userId = storeTwo.user.userId;
@@ -30,6 +30,7 @@ export async function surveyForm(test) {
     },
     body: JSON.stringify(test),
   });
+
   const data = await res.json();
   if (!res.ok) {
     console.log(data);

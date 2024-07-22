@@ -1,4 +1,9 @@
 /* general styles */
+
+:root {
+  --toastify-icon-color-info: #fff;
+}
+
 html {
   box-sizing: border-box;
   scroll-behavior: smooth;
@@ -662,21 +667,73 @@ nav i.material-icons {
   width: 100%;
 }
 
+/*
+grid-template-columns: auto minmax(0, 1fr) auto;
+
+
+
+ child
+
+
+     display: none;
+    position: relative;
+    box-sizing: border-box;
+    grid-template-columns: minmax(0, 100%);
+    width: 32em;
+    max-width: 100%;
+    padding: 0 0 1.25em;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    color: #545454;
+    font-family: inherit;
+    font-size: 1rem;
+}
+*/
+
 
 /* toastify */
 .Toastify__toast-theme--light{
-  background-color: #83E009;
+  background-color: #062d9b;
+}
+
+
+.Toastify__toast-theme--light{
+  color: #fff;
+  font-size: 14px;
+}
+
+.Toastify__toast-icon {
+  color: #fff;
 }
 
 /* modal  */
 
+.modal-container{
+
+  position: relative;
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 100%);
+  width: 32em;
+  max-width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  color: #545454;
+  font-family: inherit;
+  font-size: 1rem;
+
+}
+
 
 .modal {
+  grid-column: 2;
+  grid-row: 2;
+  place-self: center center;
   margin: 0;
   padding: 2rem;
   position: fixed;
-  top: 10vh;
-  left: calc(50% - 15rem);
   width: 30rem;
   max-height: 80vh;
   background: #e2e5eb;
@@ -780,12 +837,14 @@ nav i.material-icons {
     grid-template-columns: 1fr;
     grid-template-rows: 150px 150px;
     grid-auto-rows: 150px;
-    gap: 20px;
+    gap: 5px;
     margin-inline: auto;
   }
-  .item-link {
+
+
+  .item-link, .item-link-offline{
     width: 100%;
-    height: 100%;
+    height: 70%;
     font-size: 14px;
     margin: 0 0;
   }
