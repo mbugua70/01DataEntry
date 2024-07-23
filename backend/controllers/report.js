@@ -19,22 +19,20 @@ const createReport = async (req, res) => {
     throw new BadRequestError("Please fill all the required fill");
   }
 
-  const jobs = await ReportModel.create(
-    {
-      ba: baId,
-      name,
-      phone,
-      user_id,
-      present,
-      location
-    }
-  );
+  const reports = await ReportModel.create({
+    ba: baId,
+    name,
+    phone,
+    user_id,
+    present,
+    location,
+  });
 
-  if (!jobs) {
+  if (!reports) {
     throw new UnauthenticatedError("Invalid entries");
   }
 
-  res.status(StatusCodes.CREATED).json({ jobs });
+  res.status(StatusCodes.CREATED).json({ reports });
 };
 
 

@@ -55,7 +55,7 @@ const updateUser = async (req, res) => {
     runValidators: true,
   });
 
-  res.status(StatusCodes.OK).json({ user });
+  res.status(StatusCodes.OK).json({ user: user.getUser() });
 };
 
 module.exports = {
